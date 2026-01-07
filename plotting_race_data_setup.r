@@ -28,8 +28,8 @@ for (folder_name in TEMPORARY_FOLDER_FILE_NAMES) {
   trans_tree_demo_sum_all.df = NULL
   simData_sum_all.df = NULL
   #simObj files
-  for (simObj_rds_file in list.files(paste0("/Volumes/SSK Media/output_epi_epigen_Nov2025/no_intervention/output_simObj_epi", folder_name))) { 
-    simObj = read_rds(paste0("/Volumes/SSK Media/output_epi_epigen_Nov2025/no_intervention/output_simObj_epi", folder_name, "/", simObj_rds_file))
+  for (simObj_rds_file in list.files(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention/output_simObj_epi", folder_name))) { 
+    simObj = read_rds(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention/output_simObj_epi", folder_name, "/", simObj_rds_file))
     diag_time_demo.df = left_join(
       simObj$diag_time %>% filter(event == "diagnosis"),
       bind_rows(simObj$popdf %>% select(id, gender, risk, age, race),
@@ -75,8 +75,8 @@ for (folder_name in TEMPORARY_FOLDER_FILE_NAMES) {
   }
   
   #simData files
-  for (simData_rds_file in list.files(paste0("/Volumes/SSK Media/output_epi_epigen_Nov2025/no_intervention/output_simData_epi", folder_name))) { 
-    simData_list = read_rds(paste0("/Volumes/SSK Media/output_epi_epigen_Nov2025/no_intervention/output_simData_epi", folder_name, "/", simData_rds_file))
+  for (simData_rds_file in list.files(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention/output_simData_epi", folder_name))) { 
+    simData_list = read_rds(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention/output_simData_epi", folder_name, "/", simData_rds_file))
     simData = bind_rows(simData_list$notdisc, simData_list$disc)
     simData_sum.df = simData %>%
       group_by(month) %>%
@@ -94,13 +94,13 @@ for (folder_name in TEMPORARY_FOLDER_FILE_NAMES) {
   }
   # currently
   saveRDS(diag_time_demo_sum_all.df,
-          paste("/Volumes/SSK Media/output_epi_epigen_Nov2025/no_intervention_RACE_rds_files/epi", folder_name, "_ni_race_iter20_diag.rds", sep = "")
+          paste("/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention_RACE_rds_files/epi", folder_name, "_ni_race_iter20_diag.rds", sep = "")
   )
   saveRDS(trans_tree_demo_sum_all.df,
-          paste("/Volumes/SSK Media/output_epi_epigen_Nov2025/no_intervention_RACE_rds_files/epi", folder_name, "_ni_race_iter20_infects.rds", sep = "")
+          paste("/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention_RACE_rds_files/epi", folder_name, "_ni_race_iter20_infects.rds", sep = "")
   )
   saveRDS(simData_sum_all.df,
-          paste("/Volumes/SSK Media/output_epi_epigen_Nov2025/no_intervention_RACE_rds_files/epi", folder_name, "_ni_race_iter20_suppress_prop.rds", sep = "")
+          paste("/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention_RACE_rds_files/epi", folder_name, "_ni_race_iter20_suppress_prop.rds", sep = "")
   )
 }
 
@@ -114,10 +114,10 @@ diag_time_demo_sum_all_e_ni.df = NULL
 
 for (folder_file_no_intervention in TEMPORARY_NO_INTERVENTION_FOLDER_FILE_NAMES){
   if (folder_file_no_intervention == "gen_O5Y5"){
-    diag_time_demo_sum_all_eg_ni.df = readRDS('/Volumes/SSK Media/output_epi_epigen_Nov2025/no_intervention_RACE_rds_files/epigen_O5Y5_ni_race_iter20_diag.rds') %>%
+    diag_time_demo_sum_all_eg_ni.df = readRDS('/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention_RACE_rds_files/epigen_O5Y5_ni_race_iter20_diag.rds') %>%
       mutate(sim_type = 'epi_genetic')
   } else {
-    diag_time_demo_sum_all_e_temp_ni.df = readRDS(paste0("/Volumes/SSK Media/output_epi_epigen_Nov2025/no_intervention_RACE_rds_files/epi", folder_file_no_intervention, "_ni_race_iter20_diag.rds")) %>%
+    diag_time_demo_sum_all_e_temp_ni.df = readRDS(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention_RACE_rds_files/epi", folder_file_no_intervention, "_ni_race_iter20_diag.rds")) %>%
       mutate(sim_type = 'epi')
     
     diag_time_demo_sum_all_e_ni.df = bind_rows(diag_time_demo_sum_all_e_ni.df,
@@ -130,10 +130,10 @@ inf_time_demo_sum_all_e_ni.df = NULL
 
 for (folder_file_no_intervention in TEMPORARY_NO_INTERVENTION_FOLDER_FILE_NAMES){
   if (folder_file_no_intervention == "gen_O5Y5"){
-    inf_time_demo_sum_all_eg_ni.df = readRDS('/Volumes/SSK Media/output_epi_epigen_Nov2025/no_intervention_RACE_rds_files/epigen_O5Y5_ni_race_iter20_infects.rds') %>%
+    inf_time_demo_sum_all_eg_ni.df = readRDS('/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention_RACE_rds_files/epigen_O5Y5_ni_race_iter20_infects.rds') %>%
       mutate(sim_type = 'epi_genetic')
   } else {
-    inf_time_demo_sum_all_e_temp_ni.df = readRDS(paste0("/Volumes/SSK Media/output_epi_epigen_Nov2025/no_intervention_RACE_rds_files/epi", folder_file_no_intervention, "_ni_race_iter20_infects.rds")) %>%
+    inf_time_demo_sum_all_e_temp_ni.df = readRDS(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention_RACE_rds_files/epi", folder_file_no_intervention, "_ni_race_iter20_infects.rds")) %>%
       mutate(sim_type = 'epi')
     
     inf_time_demo_sum_all_e_ni.df = bind_rows(inf_time_demo_sum_all_e_ni.df,
@@ -160,8 +160,8 @@ for (race in race_list){
     trans_tree_demo_sum_all.df = NULL
     simData_sum_all.df = NULL
     #simObj files
-    for (simObj_rds_file in list.files(paste0("/Volumes/SSK Media/output_epi_epigen_Nov2025/intervention_race/output_epi", folder_name, "/output_simObj_", race))) { 
-      simObj = read_rds(paste0("/Volumes/SSK Media/output_epi_epigen_Nov2025/intervention_race/output_epi", folder_name, "/output_simObj_", race, "/", simObj_rds_file))
+    for (simObj_rds_file in list.files(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/intervention_race/output_epi", folder_name, "/output_simObj_", race))) { 
+      simObj = read_rds(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/intervention_race/output_epi", folder_name, "/output_simObj_", race, "/", simObj_rds_file))
       diag_time_demo.df = left_join(
         simObj$diag_time %>% filter(event == "diagnosis"),
         bind_rows(simObj$popdf %>% select(id, gender, risk, age, race),
@@ -205,8 +205,8 @@ for (race in race_list){
     }
     
     #simData files
-    for (simData_rds_file in list.files(paste0("/Volumes/SSK Media/output_epi_epigen_Nov2025/intervention_race/output_epi", folder_name, "/output_simData_", race))) { 
-      simData_list = read_rds(paste0("/Volumes/SSK Media/output_epi_epigen_Nov2025/intervention_race/output_epi", folder_name, "/output_simData_", race, "/", simData_rds_file))
+    for (simData_rds_file in list.files(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/intervention_race/output_epi", folder_name, "/output_simData_", race))) { 
+      simData_list = read_rds(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/intervention_race/output_epi", folder_name, "/output_simData_", race, "/", simData_rds_file))
       simData = bind_rows(simData_list$notdisc, simData_list$disc)
       simData_sum.df = simData %>%
         group_by(month) %>%
@@ -225,13 +225,13 @@ for (race in race_list){
     # currently
     saveRDS(diag_time_demo_sum_all.df,
             # '/Volumes/SSK Media/output_epi_epigen_Nov2025/intervention_RACE_rds_files'
-            paste("/Volumes/SSK Media/output_epi_epigen_Nov2025/intervention_RACE_rds_files/epi", folder_name, "_", race, "_iter20_diag.rds", sep = "")
+            paste("/Volumes/SSK Media/output_epi_epigen_Dec2025/intervention_RACE_rds_files/epi", folder_name, "_", race, "_iter20_diag.rds", sep = "")
     )
     saveRDS(trans_tree_demo_sum_all.df,
-            paste("/Volumes/SSK Media/output_epi_epigen_Nov2025/intervention_RACE_rds_files/epi", folder_name, "_", race, "_iter20_infects.rds", sep = "")
+            paste("/Volumes/SSK Media/output_epi_epigen_Dec2025/intervention_RACE_rds_files/epi", folder_name, "_", race, "_iter20_infects.rds", sep = "")
     )
     saveRDS(simData_sum_all.df,
-            paste("/Volumes/SSK Media/output_epi_epigen_Nov2025/intervention_RACE_rds_files/epi", folder_name, "_", race, "_iter20_suppress_prop.rds", sep = "")
+            paste("/Volumes/SSK Media/output_epi_epigen_Dec2025/intervention_RACE_rds_files/epi", folder_name, "_", race, "_iter20_suppress_prop.rds", sep = "")
     )
   }
 }

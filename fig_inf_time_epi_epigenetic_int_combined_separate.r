@@ -6,7 +6,7 @@ FOLDER_NAMES = list("gen_O5Y5", "_O1Y6", "_O2Y9", "_O3Y2", "_O4Y10",
 inf_time_demo_sum_all_e_ni.df = NULL
 
 for (folder in FOLDER_NAMES){
-  if (folder == "gen_O9Y9_ni"){
+  if (folder == "gen_O5Y5"){
     inf_time_demo_sum_all_eg_ni.df = readRDS(paste0('/Volumes/SSK Media/output_epi_epigen_Nov2025/no_intervention_RACE_rds_files/epigen_O5Y5_ni_race_iter20_infects.rds')) %>%
       mutate(sim_type = 'epi_genetic') %>%
       mutate(sim_folder = folder)
@@ -34,11 +34,11 @@ for (race in race_list){
   
   for (folder in FOLDER_NAMES){
     if (folder == "gen_O5Y5"){
-      inf_time_demo_sum_all_eg_r.df = readRDS(paste0("/Volumes/SSK Media/output_epi_epigen_Nov2025/intervention_RACE_rds_files/epigen_O5Y5_", race, "_iter20_infects.rds")) %>%
+      inf_time_demo_sum_all_eg_r.df = readRDS(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/intervention_RACE_rds_files/epigen_O5Y5_", race, "_iter20_infects.rds")) %>%
         mutate(sim_type = 'epi_genetic_r') %>%
         mutate(sim_folder = folder)
     } else {
-      inf_time_demo_sum_all_e_temp_r.df = readRDS(paste0("/Volumes/SSK Media/output_epi_epigen_Nov2025/intervention_RACE_rds_files/epi", folder, "_", race, "_iter20_infects.rds")) %>%
+      inf_time_demo_sum_all_e_temp_r.df = readRDS(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/intervention_RACE_rds_files/epi", folder, "_", race, "_iter20_infects.rds")) %>%
         mutate(sim_type = 'epi_r') %>%
         mutate(sim_folder = folder)
       
@@ -99,7 +99,7 @@ inf_time_demo_sum_plot_TOTAL.df = bind_rows(inf_time_demo_sum_plot_TOTAL.df_blac
 
 # epi + epigen
 fig_inf_time_int = ggplot(inf_time_demo_sum_plot_TEMP.df, aes(x=year, y=tot_infects, colour=sim_type, group=file)) +
-  geom_line(position=pd) +
+  geom_line(position=pd, alpha = 0.2) +
   xlab("Year") +
   ylab("Number of New Infections") +
   scale_colour_hue(name="Data",    # Legend label, use darker colors
@@ -123,7 +123,7 @@ fig_inf_time_int
 
 #svglite(filename = paste0("/Users/kevinnguyen/Downloads/fig_inf_time_epi_epigenetic_int_epigen.svg"),
         #width = 10, height = 5)
-ggsave(filename = "/Volumes/SSK Media/output_epi_epigen_Nov2025/fig_inf_time_epi_epigenetic_int_epi_epigen.svg", plot = fig_inf_time_int, device = "svg", width = 10, height = 5, units = "in")
+ggsave(filename = "/Volumes/SSK Media/output_epi_epigen_Dec2025/fig_inf_time_epi_epigenetic_int_epi_epigen.svg", plot = fig_inf_time_int, device = "svg", width = 10, height = 5, units = "in")
 fig_inf_time_int
 dev.off()
 
@@ -238,7 +238,7 @@ fig_inf_time_int
 
 #svglite(filename = paste0("/Users/kevinnguyen/Downloads/fig_inf_time_epi_epigenetic_int_epigen.svg"),
 #width = 10, height = 5)
-ggsave(filename = "/Volumes/SSK Media/output_epi_epigen_Nov2025/fig_inf_time_epi_epigenetic_noint_overall.svg", plot = fig_inf_time_int, device = "svg", width = 10, height = 5, units = "in")
+ggsave(filename = "/Volumes/SSK Media/output_epi_epigen_Dec2025/fig_inf_time_epi_epigenetic_noint_overall.svg", plot = fig_inf_time_int, device = "svg", width = 10, height = 5, units = "in")
 fig_inf_time_int
 dev.off()
 
@@ -268,6 +268,6 @@ fig_inf_time_noint = ggplot(inf_time_demo_sum_ni_mean.df, aes(x=year, y=mean_inf
 
 fig_inf_time_noint
 
-ggsave(filename = "/Volumes/SSK Media/output_epi_epigen_Nov2025/inf_fig_ni_simMean_epi_epigen.svg", plot = fig_inf_time_noint, device = "svg", width = 10, height = 5, units = "in")
-fig_diag_time_noint
+ggsave(filename = "/Volumes/SSK Media/output_epi_epigen_Dec2025/inf_fig_ni_simMean_epi_epigen.svg", plot = fig_inf_time_noint, device = "svg", width = 10, height = 5, units = "in")
+fig_inf_time_noint
 dev.off()
