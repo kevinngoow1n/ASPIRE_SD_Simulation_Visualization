@@ -114,11 +114,14 @@ diag_time_demo_sum_all_e_ni.df = NULL
 
 for (folder_file_no_intervention in TEMPORARY_NO_INTERVENTION_FOLDER_FILE_NAMES){
   if (folder_file_no_intervention == "gen_O5Y5"){
-    diag_time_demo_sum_all_eg_ni.df = readRDS('/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention_RACE_rds_files/epigen_O5Y5_ni_race_iter20_diag.rds') %>%
-      mutate(sim_type = 'epi_genetic')
+    diag_time_demo_sum_all_eg_ni.df = readRDS('/Volumes/SSK Media/output_epi_epigen_Nov2025/no_intervention_RACE_rds_files/epigen_O5Y5_ni_race_iter20_diag.rds') %>%
+      mutate(sim_type = 'epi_genetic') %>%
+      mutate(sim_folder = folder_file_no_intervention)
+    
   } else {
-    diag_time_demo_sum_all_e_temp_ni.df = readRDS(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention_RACE_rds_files/epi", folder_file_no_intervention, "_ni_race_iter20_diag.rds")) %>%
-      mutate(sim_type = 'epi')
+    diag_time_demo_sum_all_e_temp_ni.df = readRDS(paste0("/Volumes/SSK Media/output_epi_epigen_Nov2025/no_intervention_RACE_rds_files/epi", folder_file_no_intervention, "_ni_race_iter20_diag.rds")) %>%
+      mutate(sim_type = 'epi') %>%
+      mutate(sim_folder = folder_file_no_intervention)
     
     diag_time_demo_sum_all_e_ni.df = bind_rows(diag_time_demo_sum_all_e_ni.df,
                                                diag_time_demo_sum_all_e_temp_ni.df)
