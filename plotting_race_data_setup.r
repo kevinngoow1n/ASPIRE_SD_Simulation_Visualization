@@ -28,8 +28,8 @@ for (folder_name in TEMPORARY_FOLDER_FILE_NAMES) {
   trans_tree_demo_sum_all.df = NULL
   simData_sum_all.df = NULL
   #simObj files
-  for (simObj_rds_file in list.files(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention/output_simObj_epi", folder_name))) { 
-    simObj = read_rds(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention/output_simObj_epi", folder_name, "/", simObj_rds_file))
+  for (simObj_rds_file in list.files(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention/output_epi", folder_name, "/output_simObj"))) { 
+    simObj = read_rds(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention/output_epi", folder_name, "/output_simObj/", simObj_rds_file))
     diag_time_demo.df = left_join(
       simObj$diag_time %>% filter(event == "diagnosis"),
       bind_rows(simObj$popdf %>% select(id, gender, risk, age, race),
@@ -75,8 +75,8 @@ for (folder_name in TEMPORARY_FOLDER_FILE_NAMES) {
   }
   
   #simData files
-  for (simData_rds_file in list.files(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention/output_simData_epi", folder_name))) { 
-    simData_list = read_rds(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention/output_simData_epi", folder_name, "/", simData_rds_file))
+  for (simData_rds_file in list.files(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention/output_epi", folder_name, "/output_simData"))) { 
+    simData_list = read_rds(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention/output_epi", folder_name, "/output_simData/", simData_rds_file))
     simData = bind_rows(simData_list$notdisc, simData_list$disc)
     simData_sum.df = simData %>%
       group_by(month) %>%

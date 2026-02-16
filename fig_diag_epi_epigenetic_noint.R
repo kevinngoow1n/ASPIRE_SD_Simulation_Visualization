@@ -39,6 +39,8 @@ diag_time_demo_sum_plot_TEMP_ni.df = diag_time_demo_sum_plot.df %>%
 
 diag_time_demo_sum_plot_TEMP_ni.df$sim_type <- factor(diag_time_demo_sum_plot_TEMP_ni.df$sim_type, levels=c("Observed", "epi", "epi_genetic"))
 
+pd <- position_dodge(0.1) # move them .05 to the left and right
+
 fig_diag_time_int = ggplot(diag_time_demo_sum_plot_TEMP_ni.df, aes(x=year, y=year_diag, colour=sim_type, group=file)) +
   geom_line(position=pd, alpha=0.2) +
   xlab("Year") +
@@ -128,5 +130,40 @@ fig_diag_time_noint = ggplot(diag_time_demo_sum_ni_mean.df, aes(x=year, y=mean_d
 fig_diag_time_noint
 
 ggsave(filename = "/Volumes/SSK Media/output_epi_epigen_Dec2025/diag_fig_ni_simMean_epi_epigen.svg", plot = fig_diag_time_noint, device = "svg", width = 10, height = 5, units = "in")
+fig_diag_time_noint
+dev.off()
+
+# mean 2018 to 2021
+diag_time_demo_sum_ni_mean.df_3yrs = diag_time_demo_sum_ni_mean.df %>%
+  filter(year <= 2021)
+
+fig_diag_time_noint = ggplot(diag_time_demo_sum_ni_mean.df_3yrs, aes(x=year, y=mean_diag, colour=sim_type, group=sim_folder)) +
+  geom_line(position=pd) +
+  xlab("Year") +
+  ylab("Number of New Diagnoses") +
+  scale_colour_hue(name="Data",    # Legend label, use darker colors
+                   #breaks=c("Observed", "epi", "epi_genetic", "epi_int", "epi_genetic_int"),
+                   #labels=c("Obs", "Sim (E)", "Sim (E+G)", "Sim Int (E)", "Sim Int (E+G)"),
+                   breaks=c("Observed", "epi_r", "epi_genetic_r"),
+                   labels=c("Obs", "Sim (E)", "Sim (E+G)"),
+                   l=40) +                    # Use darker colors, lightness=40
+  ggtitle(paste0("Average of New Diagnoses Over Time: Sim (E) & Sim (E+G)")) + 
+  expand_limits(y=0) +                        # Expand y range
+  scale_y_continuous(limits = c(0, 1000)) +         # Set tick every 4
+  theme_bw() +
+  theme(legend.justification=c(1,0),
+        #legend.position=c(1,0)
+        legend.position = "bottom") +
+  annotate("text", x = 2020, y = 625, label = "Real Calibration Values:") + # Real Values
+  annotate("text", x = 2019, y = 500, label = "436") + # Year 2019 
+  geom_point(aes(x= 2019, y= 436), colour="blue") + 
+  annotate("text", x = 2020, y = 430, label = "366") + # Year 2020
+  geom_point(aes(x= 2020, y= 366), colour="blue") + 
+  annotate("text", x = 2021, y = 500, label = "420") + # Year 2021
+  geom_point(aes(x= 2021, y= 420), colour="blue")
+
+fig_diag_time_noint
+
+ggsave(filename = "/Volumes/SSK Media/output_epi_epigen_Dec2025/diag_fig_ni_simMean_epi_epigen_3yrs.svg", plot = fig_diag_time_noint, device = "svg", width = 10, height = 5, units = "in")
 fig_diag_time_noint
 dev.off()

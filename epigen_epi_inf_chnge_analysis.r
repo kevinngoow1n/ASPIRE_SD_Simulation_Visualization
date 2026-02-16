@@ -1,6 +1,103 @@
 # December 15, 2025 Data Visualization Request 
 # (Analysis of why epigenetic values are lower in change than epi)
 
+# combining no intervention and intervention infections
+# no infections
+FOLDER_NAMES = list("gen_O5Y5", "_O1Y6", "_O2Y9", "_O3Y2", "_O4Y10", 
+                    "_O5Y4", "_O6Y1", "_O7Y6", "_O9Y8", "_O8Y2", "_O10Y9")
+
+### time tree (infection)
+inf_time_demo_sum_all_e_ni.df = NULL
+
+for (folder in FOLDER_NAMES){
+  if (folder == "gen_O5Y5"){
+    inf_time_demo_sum_all_eg_ni.df = readRDS(paste0('/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention_RACE_rds_files/epigen_O5Y5_ni_race_iter20_infects.rds')) %>%
+      mutate(sim_type = 'epi_genetic') %>%
+      mutate(sim_folder = folder)
+  } else {
+    inf_time_demo_sum_all_e_temp_ni.df = readRDS(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/no_intervention_RACE_rds_files/epi", folder, "_ni_race_iter20_infects.rds")) %>%
+      mutate(sim_type = 'epi') %>%
+      mutate(sim_folder = folder)
+    
+    inf_time_demo_sum_all_e_ni.df = bind_rows(inf_time_demo_sum_all_e_ni.df,
+                                              inf_time_demo_sum_all_e_temp_ni.df)
+  }
+}
+
+# race
+#race = "other" # change "black", "hispanic", "other"
+
+race_list = list("black", "hispanic", "other")
+
+for (race in race_list){
+  ### time tree (infection)
+  inf_time_demo_sum_all_e_r.df = NULL
+  
+  for (folder in FOLDER_NAMES){
+    if (folder == "gen_O5Y5"){
+      inf_time_demo_sum_all_eg_r.df = readRDS(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/intervention_RACE_rds_files/epigen_O5Y5_", race, "_iter20_infects.rds")) %>%
+        mutate(sim_type = 'epi_genetic_r') %>%
+        mutate(sim_folder = folder)
+    } else {
+      inf_time_demo_sum_all_e_temp_r.df = readRDS(paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/intervention_RACE_rds_files/epi", folder, "_", race, "_iter20_infects.rds")) %>%
+        mutate(sim_type = 'epi_r') %>%
+        mutate(sim_folder = folder)
+      
+      inf_time_demo_sum_all_e_r.df = bind_rows(inf_time_demo_sum_all_e_r.df,
+                                               inf_time_demo_sum_all_e_temp_r.df)
+    }
+  }
+  
+  # combining all time tree (infection)
+  inf_time_demo_sum_all_e.df = bind_rows(inf_time_demo_sum_all_e_ni.df, inf_time_demo_sum_all_e_r.df)
+  inf_time_demo_sum_all_eg.df = bind_rows(inf_time_demo_sum_all_eg_ni.df, inf_time_demo_sum_all_eg_r.df)
+  inf_time_demo_sum_all.df = bind_rows(inf_time_demo_sum_all_eg.df, inf_time_demo_sum_all_e.df)
+
+  inf_time_demo_sum_all.df$intervention = race
+  
+  inf_time_demo_sum_plot.df = inf_time_demo_sum_all.df %>%
+    mutate(race = case_when(race == "black" ~ "Black",
+                            race == "hispanic" ~ "Hispanic",
+                            race == "other" ~ "Other")) %>%
+    mutate(intervention = case_when(intervention == "black" ~ "Black",
+                                    intervention == "hispanic" ~ "Hispanic",
+                                    intervention == "other" ~ "Other"))
+  
+  # inf_time_demo_sum_plot_TEMP.df = inf_time_demo_sum_plot_TEMP.df %>%
+  #   mutate(intervention = case_when(intervention == "black" ~ "Black",
+  #                                   intervention == "hispanic" ~ "Hispanic",
+  #                                   intervention == "other" ~ "Other"))
+  inf_time_demo_sum_plot_TOTAL.df = inf_time_demo_sum_plot.df
+  
+  inf_time_demo_sum_plot_TEMP.df = inf_time_demo_sum_plot.df %>%
+    filter(sim_type %in% c("Observed", "epi_r", "epi_genetic_r"))
+  
+  inf_time_demo_sum_plot_TEMP.df$sim_type <- factor(inf_time_demo_sum_plot_TEMP.df$sim_type, levels=c("Observed", "epi_r", "epi_genetic_r"))
+  
+  pd <- position_dodge(0.1)
+  
+  print(race)
+  
+  if (race == "black"){
+    inf_time_demo_sum_plot_TEMP.df_black = inf_time_demo_sum_plot_TEMP.df # requires for race to be changed to be "black"
+  } else if (race == "hispanic"){
+    inf_time_demo_sum_plot_TEMP.df_hispanic = inf_time_demo_sum_plot_TEMP.df # requires for race to be changed to be "hispanic"
+  } else {
+    inf_time_demo_sum_plot_TEMP.df_other = inf_time_demo_sum_plot_TEMP.df # requires for race to be changed to be "other"
+  }
+  
+  if (race == "black"){
+    inf_time_demo_sum_plot_TOTAL.df_black = inf_time_demo_sum_plot_TOTAL.df # requires for race to be changed to be "black"
+  } else if (race == "hispanic"){
+    inf_time_demo_sum_plot_TOTAL.df_hispanic = inf_time_demo_sum_plot_TOTAL.df # requires for race to be changed to be "hispanic"
+  } else {
+    inf_time_demo_sum_plot_TOTAL.df_other = inf_time_demo_sum_plot_TOTAL.df # requires for race to be changed to be "other"
+  }
+}
+
+inf_time_demo_sum_plot_TEMP.df = bind_rows(inf_time_demo_sum_plot_TEMP.df_black, inf_time_demo_sum_plot_TEMP.df_hispanic, inf_time_demo_sum_plot_TEMP.df_other)
+inf_time_demo_sum_plot_TOTAL.df = bind_rows(inf_time_demo_sum_plot_TOTAL.df_black, inf_time_demo_sum_plot_TOTAL.df_hispanic, inf_time_demo_sum_plot_TOTAL.df_other)
+
 ## black intervention black race epi only + add MSM Assortativity by Risk
 epi_folders = unique(na.omit(inf_time_demo_sum_plot_TOTAL.df$sim_folder)[na.omit(inf_time_demo_sum_plot_TOTAL.df$sim_folder) != "gen_O5Y5"])
 
@@ -64,7 +161,7 @@ for (i in epi_folders) {
   
   # svglite(filename = paste0("/Volumes/SSK Media/output_epi_epigen_Nov2025/fig_inf_time_epi_epigenetic_change_int", i, "_pos_neg.svg"),
   #         width = 10, height = 5)
-  ggsave(filename = paste0("/Volumes/SSK Media/output_epi_epigen_Nov2025/fig_inf_time_epi_epigenetic_change_int", i, "_pos_neg.svg"),
+  ggsave(filename = paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/fig_inf_time_epi_epigenetic_change_int", i, "_pos_neg.svg"),
          width = 10, height = 5, plot = fig_inf_reduce_int)
   fig_inf_reduce_int
   dev.set(dev.next())
@@ -144,7 +241,7 @@ for (i in 1:difference_year){
   
   # svglite(filename = paste0("/Volumes/SSK Media/output_epi_epigen_Nov2025/fig_inf_time_epi_epigenetic_change_int_", race, "_pos_neg.svg"),
   #         width = 10, height = 5)
-  ggsave(filename = paste0("/Volumes/SSK Media/output_epi_epigen_Nov2025/fig_inf_time_epi_epigenetic_change_int_", starting_year,"_", max_year, "_pos_neg.svg"),
+  ggsave(filename = paste0("/Volumes/SSK Media/output_epi_epigen_Dec2025/fig_inf_time_epi_epigenetic_change_int_", starting_year,"_", max_year, "_pos_neg.svg"),
          width = 10, height = 5, plot = fig_inf_reduce_int)
   fig_inf_reduce_int
   dev.set(dev.next())
